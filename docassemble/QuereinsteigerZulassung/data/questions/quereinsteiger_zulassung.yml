@@ -1,0 +1,93 @@
+mandatory: True
+question: |
+  Quereisteigerqualifizierung 
+subquestion: |
+  Teste, ob du zugelassen werden kannst. Der Test dauert weniger als 5 Minuten. Wenn du die Voraussetzungen erfüllst, erhältst du sofort die Zulassung.  
+continue button field: intro
+---
+code: |
+  sozialer_beruf
+  angestellt
+  berufsabschluss
+  dienst
+  nachweise_qualifikation
+  nachweise_sonstige
+---
+question: |
+  Pädagogischer oder sozialer Beruf
+subquestion: |
+  Hast du einen Berufsabschluss in einem der folgenden Berufe?  
+    
+  - Lehrer/Lehrerin  
+  - Ergotherapeut/Ergotherapeutin  
+  - Logopäde/Logopädin  
+  - Physiotherapeut/Physiotherapeutin  
+  - Motopäde/Motopädin  
+  - Arbeitspädagogen/Arbeitspädagogin  
+  - Hebammen/Entbindungspfleger  
+  - Kinderpflegerin/Kinderpfleger  
+  - Heilerziehungspflegerin/Heilerziehungspfleger  
+  - Gesundheitspfleger/Gesundheitspflegerin  
+  - Familienpfleger/Familienpflegerin  
+  - Sozialassistent/Sozialassistentin  
+  - Kulturpädagog:innen  
+yesno: sozialer_beruf
+---
+question: |
+  Besondere Fähigkeiten und Erfahrungen
+subquestion: |
+  Bist oder warst du bei einem Träger der Jugendhilfe oder der Eingliederungshilfe angestellt?
+yesno: angestellt
+---
+question: |
+  Hast du einen Berufsabschluss?
+yesno: berufsabschluss
+---
+question: |
+  Sonstige Qualifizierung
+subquestion: |
+  Hast du für mindestens ein Jahr mit einem Umfang von mehr als 20 Stunden pro Woche einen der folgenden Dienste oder eine der folgenden Tätigkeiten übernommen:  
+  
+  - einen Bundesfreiwilligendienst oder einen  
+  - anderen Freiwilligendienst absolviert oder  
+  - eine Tätigkeit bei einem Träger der Wohlfahrtspflege ausgeübt oder  
+  - ein Ehrenamt im sozialen Bereich oder  
+  - eine vergleichbare Tätigkeit 
+yesno: dienst
+under: |
+  **Vergleichbare Tätigkeit**: Eine vergleichbare Tätigkeit kann zum Beispiel die Tätigkeit als Justizvollzugsbeamter in der Jugendstrafhilfe, in der Jugendarbeit oder auch in der unterstützenden Arbeit mit Kinder im Kontext Schule und Kita sein. 
+---
+question: |
+  Unterlagen
+subquestion: |
+  Lade deine Qualifikationsnachweise zu deinem Beruf hier hoch.
+fields:
+  - Picture: nachweise_qualifikation
+    datatype: file
+    required: false
+---
+question: |
+  Unterlagen
+subquestion: |
+  Lade die Nachweise zu deinen Diensten und Tätigkeiten hier hoch.
+fields:
+  - Picture: nachweise_sonstige
+    datatype: file
+    required: false
+---
+mandatory: True
+question: |
+  Zulassung
+subquestion: |
+  % if sozialer_beruf or angestellt or (berufsabschluss and dienst):
+  Die Zulassungsprüfung war erfolgreich. Du kannst sofort mit dem Kurs beginnen.  
+  % else:
+  Du erfüllst leider nicht die Zulassungsvoraussetzungen.
+  % endif
+attachment:
+  - name: Zulassungsentscheidung
+    filename: zulassung
+    description: |
+      Entscheidung über die Zulassung
+    content file: zulassung.md
+  

@@ -1,17 +1,30 @@
-mandatory: True
+---
+metadata:
+  title: Zulassung von Quereinsteigern
+  short title: Quereinsteiger
+  comment: | 
+    Dieses Interview dient der Zulassungsprüfung von potentiellen Quereinsteigern
+  error action: on_error
+  continue button label: |
+    Weiter
+  continue button color: success
+  resume button label: |
+    Fortsetzen
+  resume button color: 165477
+  back button label: |
+    Zurück
+  #back button color: danger
+  footer: |
+    Kontakt: Iresa
+---
+modules:
+  - .create_user
+---
 question: |
   Quereisteigerqualifizierung 
 subquestion: |
   Teste, ob du zugelassen werden kannst. Der Test dauert weniger als 5 Minuten. Wenn du die Voraussetzungen erfüllst, erhältst du sofort die Zulassung.  
 continue button field: intro
----
-code: |
-  sozialer_beruf
-  angestellt
-  berufsabschluss
-  dienst
-  nachweise_qualifikation
-  nachweise_sonstige
 ---
 question: |
   Pädagogischer oder sozialer Beruf
@@ -75,12 +88,45 @@ fields:
     datatype: file
     required: false
 ---
+question: |
+  Persönliche Angaben
+subquestion: |
+  Die Zulassungsprüfung war erfolgreich. Die folgenden persönlichen Angaben
+  benötigen wir, um dich als Benutzer für den Kurs anzulegen.
+fields:
+  - Vorname: vorname
+  - Nachname: nachname
+  - Email: email
+---
 mandatory: True
+code: |
+  intro
+  sozialer_beruf
+  angestellt
+  berufsabschluss
+  dienst
+  nachweise_qualifikation
+  nachweise_sonstige
+  if sozialer_beruf or angestellt or (berufsabschluss and dienst):
+    vorname
+    passwort = f'{vorname}.{nachname}2024'.capitalize()
+    create_zitadel_user(vorname, nachname, email, passwort)
+  endscreen
+---
+event: endscreen
 question: |
   Zulassung
 subquestion: |
   % if sozialer_beruf or angestellt or (berufsabschluss and dienst):
-  Die Zulassungsprüfung war erfolgreich. Du kannst sofort mit dem Kurs beginnen.  
+  Du kannst sofort mit dem Kurs beginnen.
+  
+  Du findest den Kurs hier: ...
+  
+  Du wirst dann zu unserer Benutzerverwaltung geleitet, wo du dich mit deiner hier erfassten 
+  Email ${ email } und dem initilen Passwort ${ passwort } einloggen kannst.
+  
+  Zur Änderung auf ein nur dir bekanntes Passwort wirst du im Zuge der ersten Anmeldung 
+  aufgefordert.
   % else:
   Du erfüllst leider nicht die Zulassungsvoraussetzungen.
   % endif
